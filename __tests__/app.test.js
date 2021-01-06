@@ -2,6 +2,7 @@ const fs = require('fs');
 const pool = require('../lib/utils/pool');
 const request = require('supertest');
 const app = require('../lib/app');
+const UserService = require('../lib/services/UserServices');
 
 describe('15_auth_teddy_gram routes', () => {
   beforeEach(() => {
@@ -16,8 +17,28 @@ describe('15_auth_teddy_gram routes', () => {
         expect(res.body).toEqual({
           id: expect.any(String),
           email: 'test@test.com',
-          password: 'test'
+          password: expect.any(String)
         });
       });
   });
+
+  it('should login a user viq POST', async() => {
+    const user = await UserService.create({
+      email: 'test@test.com',
+      password: 'test'
+    });
+    const res = await request(app)
+      .post('/api/v1/auth/login')
+      .send({
+        email: 'test@test.com',
+        password: 'test'
+      });
+
+    expect(res.body).toEqual({
+      id: user.id,
+      email: 'test@test.com',
+      password: expect.any(String)
+    });
+  });
+
 });
