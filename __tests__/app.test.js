@@ -9,15 +9,19 @@ describe('15_auth_teddy_gram routes', () => {
     return pool.query(fs.readFileSync('./sql/setup.sql', 'utf-8'));
   });
 
+  afterAll(() => {
+    return pool.end();
+  });
+
   it('should signup a user using POST', async() => {
-    return request(app)
+    return await request(app)
       .post('/api/v1/auth/signup')
       .send({ email: 'test@test.com', password: 'test' })
       .then((res) => {
         expect(res.body).toEqual({
           id: expect.any(String),
           email: 'test@test.com',
-          password: expect.any(String)
+          passwordHash: expect.any(String)
         });
       });
   });
@@ -37,7 +41,7 @@ describe('15_auth_teddy_gram routes', () => {
     expect(res.body).toEqual({
       id: user.id,
       email: 'test@test.com',
-      password: expect.any(String)
+      passwordHash: expect.any(String)
     });
   });
 
