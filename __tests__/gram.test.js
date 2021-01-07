@@ -87,14 +87,27 @@ describe('CRUD routes for grams', () => {
     const res = await agent
       .delete(`/api/v1/grams/${gram.id}`);
 
-    expect(res.body).toEqual([{ 
+    expect(res.body).toEqual({ 
       id: gram.id,
       photoUrl: 'www.gram.com', 
       caption: 'this is the caption', 
       tags: 'this is the tag', 
-      userId: user.id }]
-    );
+      userId: user.id });
+  });
 
+  it('should update a gram by id via PATCH', async() => {
+    const gram = await Gram.create({ photoUrl: 'www.gram.com', caption: 'this is the caption', tags: 'this is the tag', userId: user.id });
+
+    const res = await agent
+      .patch(`/api/v1/grams/${gram.id}`)
+      .send({ caption: 'updated caption' });
+
+    expect(res.body).toEqual({ 
+      id: gram.id,
+      photoUrl: 'www.gram.com', 
+      caption: 'updated caption', 
+      tags: 'this is the tag', 
+      serId: user.id });
   });
 })
 ;
