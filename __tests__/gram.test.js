@@ -65,6 +65,36 @@ describe('CRUD routes for grams', () => {
     expect(res.body).toEqual(expect.arrayContaining(grams));
     expect(res.body).toHaveLength(grams.length);
   });
+  
+  it('should get get by id via GET', async() => {
+    const gram = await Gram.create({ photoUrl: 'www.gram.com', caption: 'this is the caption', tags: 'this is the tag', userId: user.id });
 
+    const res = await agent
+      .get(`/api/v1/grams/${gram.id}`);
+
+    expect(res.body).toEqual([{ 
+      id: gram.id,
+      photoUrl: 'www.gram.com', 
+      caption: 'this is the caption', 
+      tags: 'this is the tag', 
+      userId: user.id }]
+    );
+  });
+
+  it('should remove a gram by id via DELETE', async() => {
+    const gram = await Gram.create({ photoUrl: 'www.gram.com', caption: 'this is the caption', tags: 'this is the tag', userId: user.id });
+
+    const res = await agent
+      .delete(`/api/v1/grams/${gram.id}`);
+
+    expect(res.body).toEqual([{ 
+      id: gram.id,
+      photoUrl: 'www.gram.com', 
+      caption: 'this is the caption', 
+      tags: 'this is the tag', 
+      userId: user.id }]
+    );
+
+  });
 })
 ;
