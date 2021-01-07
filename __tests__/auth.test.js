@@ -66,5 +66,5 @@ describe('15_auth_teddy_gram routes', () => {
       email: 'test@test.com'
     });
   });
-
+  
 });
