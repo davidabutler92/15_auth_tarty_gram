@@ -3,7 +3,6 @@ const request = require('supertest');
 const fs = require('fs');
 const app = require('../lib/app');
 const UserService = require('../lib/services/UserServices');
-const grams = require('../lib/controllers/grams');
 const Gram = require('../lib/models/Grams');
 
 describe('CRUD routes for grams', () => {
