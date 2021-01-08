@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS users CASCADE;
-DROP TABLE IF EXISTS grams;
+DROP TABLE IF EXISTS grams CASCADE;
+DROP TABLE IF EXISTS comments;
 
 --add profile_photo_url
 CREATE TABLE users (
@@ -15,4 +16,11 @@ CREATE TABLE grams (
   caption TEXT NOT NULL,
   tags TEXT[],
   user_id BIGINT REFERENCES users(id) NOT NULL
+);
+
+CREATE TABLE comments (
+  id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  user_id BIGINT REFERENCES users(id) NOT NULL,
+  gram_id BIGINT REFERENCES grams(id),
+  comment TEXT NOT NULL
 )
