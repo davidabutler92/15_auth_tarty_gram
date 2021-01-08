@@ -4,6 +4,7 @@ const fs = require('fs');
 const app = require('../lib/app');
 const UserService = require('../lib/services/UserServices');
 const Gram = require('../lib/models/Grams');
+const Comment = require('../lib/models/Comments');
 
 describe('CRUD routes for grams', () => {
   let agent;
@@ -69,16 +70,19 @@ describe('CRUD routes for grams', () => {
   
   it('should get get by id via GET', async() => {
     const gram = await Gram.create({ photoUrl: 'www.gram.com', caption: 'this is the caption', tags: ['tag 1', 'tag 2', 'tag 3'], userId: user.id });
+    const comment = await Comment.create({ userId: user.id, gramId: gram.id, comment: 'comment for the gram!' });
 
     const res = await agent
       .get(`/api/v1/grams/${gram.id}`);
 
-    expect(res.body).toEqual([{ 
+    expect(res.body).toEqual({ 
       id: gram.id,
       photoUrl: 'www.gram.com', 
       caption: 'this is the caption', 
       tags: ['tag 1', 'tag 2', 'tag 3'], 
-      userId: user.id }]
+      userId: user.id,
+      comments: [comment] 
+    }
     );
   });
 
