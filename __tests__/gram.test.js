@@ -16,7 +16,8 @@ describe('CRUD routes for grams', () => {
 
     user = await UserService.create({
       email: 'test@test.com',
-      password: 'test'
+      password: 'test',
+      profilePhoto: 'photo.jpg'
     });
 
     await agent
@@ -39,7 +40,7 @@ describe('CRUD routes for grams', () => {
       .send({
         photoUrl: 'www.gram.com',
         caption: 'this is the caption',
-        tags: 'this is the tag',
+        tags: ['tag 1', 'tag 2', 'tag 3'],
         userId: user.id
       });
 
@@ -47,16 +48,16 @@ describe('CRUD routes for grams', () => {
       id: expect.any(String),
       photoUrl: 'www.gram.com',
       caption: 'this is the caption',
-      tags: 'this is the tag',
+      tags: ['tag 1', 'tag 2', 'tag 3'],
       userId: user.id
     });
   });
 
   it('should get grams via GET', async() => {
     const grams = await Promise.all([
-      { photoUrl: 'www.gram.com', caption: 'this is the caption', tags: 'this is the tag', userId: user.id },
-      { photoUrl: 'www.gram.com', caption: 'this is the caption2', tags: 'this is the tag2', userId: user.id },
-      { photoUrl: 'www.gram.com', caption: 'this is the caption3', tags: 'this is the tag3', userId: user.id }
+      { photoUrl: 'www.gram.com', caption: 'this is the caption', tags: ['tag 1', 'tag 2', 'tag 3'], userId: user.id },
+      { photoUrl: 'www.gram.com', caption: 'this is the caption2', tags: ['tag 1', 'tag 2', 'tag 3'], userId: user.id },
+      { photoUrl: 'www.gram.com', caption: 'this is the caption3', tags: ['tag 1', 'tag 2', 'tag 3'], userId: user.id }
     ].map(gram => Gram.create(gram)));
 
     const res = await agent
@@ -67,7 +68,7 @@ describe('CRUD routes for grams', () => {
   });
   
   it('should get get by id via GET', async() => {
-    const gram = await Gram.create({ photoUrl: 'www.gram.com', caption: 'this is the caption', tags: 'this is the tag', userId: user.id });
+    const gram = await Gram.create({ photoUrl: 'www.gram.com', caption: 'this is the caption', tags: ['tag 1', 'tag 2', 'tag 3'], userId: user.id });
 
     const res = await agent
       .get(`/api/v1/grams/${gram.id}`);
@@ -76,13 +77,13 @@ describe('CRUD routes for grams', () => {
       id: gram.id,
       photoUrl: 'www.gram.com', 
       caption: 'this is the caption', 
-      tags: 'this is the tag', 
+      tags: ['tag 1', 'tag 2', 'tag 3'], 
       userId: user.id }]
     );
   });
 
   it('should remove a gram by id via DELETE', async() => {
-    const gram = await Gram.create({ photoUrl: 'www.gram.com', caption: 'this is the caption', tags: 'this is the tag', userId: user.id });
+    const gram = await Gram.create({ photoUrl: 'www.gram.com', caption: 'this is the caption', tags: ['tag 1', 'tag 2', 'tag 3'], userId: user.id });
 
     const res = await agent
       .delete(`/api/v1/grams/${gram.id}`);
@@ -91,12 +92,12 @@ describe('CRUD routes for grams', () => {
       id: gram.id,
       photoUrl: 'www.gram.com', 
       caption: 'this is the caption', 
-      tags: 'this is the tag', 
+      tags: ['tag 1', 'tag 2', 'tag 3'], 
       userId: user.id });
   });
 
   it('should update a gram by id via PATCH', async() => {
-    const gram = await Gram.create({ photoUrl: 'www.gram.com', caption: 'this is the caption', tags: 'this is the tag', userId: user.id });
+    const gram = await Gram.create({ photoUrl: 'www.gram.com', caption: 'this is the caption', tags: ['tag 1', 'tag 2', 'tag 3'], userId: user.id });
 
     const res = await agent
       .patch(`/api/v1/grams/${gram.id}`)
@@ -106,8 +107,9 @@ describe('CRUD routes for grams', () => {
       id: gram.id,
       photoUrl: 'www.gram.com', 
       caption: 'updated caption', 
-      tags: 'this is the tag', 
-      serId: user.id });
+      tags: ['tag 1', 'tag 2', 'tag 3'], 
+      userId: user.id 
+    });
   });
 })
 ;
