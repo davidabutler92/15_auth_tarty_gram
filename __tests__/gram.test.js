@@ -115,5 +115,35 @@ describe('CRUD routes for grams', () => {
       userId: user.id 
     });
   });
-})
-;
+
+  it.only('should get the top 10 most popular grams via GET', async() => {
+    const grams = await Promise.all([
+      { photoUrl: 'www.gram.com', caption: 'this is the caption', tags: ['tag 1', 'tag 2', 'tag 3'], userId: user.id },
+      { photoUrl: 'www.gram.com', caption: 'this is the caption2', tags: ['tag 1', 'tag 2', 'tag 3'], userId: user.id },
+      { photoUrl: 'www.gram.com', caption: 'this is the caption3', tags: ['tag 1', 'tag 2', 'tag 3'], userId: user.id }
+    ].map(gram => Gram.create(gram)));
+
+    const comments = await Promise.all([
+      { userId: '1', gramId: '1', comment: 'this is a comment' },
+      { userId: '1', gramId: '2', comment: 'this is a comment' },
+      { userId: '1', gramId: '3', comment: 'this is a comment' },
+      { userId: '1', gramId: '2', comment: 'this is a comment' },
+      { userId: '1', gramId: '3', comment: 'this is a comment' },
+      { userId: '1', gramId: '1', comment: 'this is a comment' },
+      { userId: '1', gramId: '1', comment: 'this is a comment' },
+      { userId: '1', gramId: '1', comment: 'this is a comment' },
+      { userId: '1', gramId: '1', comment: 'this is a comment' },
+      { userId: '1', gramId: '1', comment: 'this is a comment' },
+    ].map(comment => Comment.create(comment)));
+
+    const res = await agent
+      .get('/api/v1/grams/popular');
+
+    expect(res.body).toEqual([
+      { id: expect.any(String), photoUrl: 'www.gram.com', caption: 'this is the caption', tags: ['tag 1', 'tag 2', 'tag 3'], userId: user.id },
+      { id: expect.any(String), photoUrl: 'www.gram.com', caption: 'this is the caption2', tags: ['tag 1', 'tag 2', 'tag 3'], userId: user.id },
+      { id: expect.any(String), photoUrl: 'www.gram.com', caption: 'this is the caption3', tags: ['tag 1', 'tag 2', 'tag 3'], userId: user.id }
+    ]);
+  });
+
+});
