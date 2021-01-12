@@ -24,11 +24,3 @@ CREATE TABLE comments (
   gram_id BIGINT REFERENCES grams(id),
   comment TEXT NOT NULL
 )
-
-INSERT INTO grams (photo_url, caption, tags, user_id) VALUES 
-('something', 'caption something', '{'text', 'more text'}', 1)
-('something', 'captAHHHng', '{'text', 'more text'}', 1)
-('something', 'captioksnt', '{'text', 'more text'}', 1)
-('something', 'caption ', '{'text', 'more text'}', 1)
-('something', 'captionhing', '{'text', 'more text'}', 1)
-('something', 'captihing', '{'text', 'more text'}', 1)

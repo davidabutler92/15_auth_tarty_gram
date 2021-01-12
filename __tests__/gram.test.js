@@ -116,7 +116,7 @@ describe('CRUD routes for grams', () => {
     });
   });
 
-  it.only('should get the top 10 most popular grams via GET', async() => {
+  it('should get the top 10 most popular grams via GET', async() => {
     const grams = await Promise.all([
       { photoUrl: 'www.gram.com', caption: 'this is the caption', tags: ['tag 1', 'tag 2', 'tag 3'], userId: user.id },
       { photoUrl: 'www.gram.com', caption: 'this is the caption2', tags: ['tag 1', 'tag 2', 'tag 3'], userId: user.id },
